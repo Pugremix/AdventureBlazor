@@ -18,12 +18,7 @@ jobs:
         # publishes Blazor project to the release-folder
         - name: Publish .NET Core Project
           run: dotnet publish Adventure/Adventure.csproj -c Release -o release --nologo
-        - name: Commit wwwroot to GitHub Pages
-          uses: JamesIves/github-pages-deploy-action@3.7.1
-          with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            BRANCH: gh-pages
-            FOLDER: release/wwwroot
+        # rewrite base url
         - name: Rewrite base href
           uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
           with:
@@ -32,3 +27,10 @@ jobs:
         # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
         - name: Add .nojekyll file
           run: touch release/wwwroot/.nojekyll
+        # commit wwwroot to github pages
+        - name: Commit wwwroot to GitHub Pages
+          uses: JamesIves/github-pages-deploy-action@3.7.1
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            BRANCH: gh-pages
+            FOLDER: release/wwwroot
